@@ -1,0 +1,29 @@
+; Engine configuration file.
+; Created for Godot 4.7.x
+config_version=5
+
+[application]
+config/name="Rolling Balance 16"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+boot_splash/bg_color=Color(0.04, 0.055, 0.075, 1)
+boot_splash/show_image=false
+
+[display]
+
+[display/window]
+size/viewport_width=1920
+size/viewport_height=1080
+size/window_width_override=1280
+size/window_height_override=720
+stretch/mode="canvas_items"
+handheld/orientation=1
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+anti_aliasing/quality/msaa_3d=2
+
+[physics]
+3d/default_gravity=19.6
