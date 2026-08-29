@@ -34,14 +34,14 @@ jobs:
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager "platform-tools" "build-tools;35.0.1" "platforms;android-35" "platforms;android-36" "cmdline-tools;latest"
 
-      - name: Build debug APK
+      - name: Build debug APK with Gradle
         env:
           GODOT_ANDROID_KEYSTORE_DEBUG_PATH: /root/debug.keystore
           GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
           GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
         run: |
           mkdir -p build
-          godot --headless --verbose --path . --export-debug "Android 16" build/RollingBalance16.apk
+          godot --headless --verbose --path . --install-android-build-template --export-debug "Android 16" build/RollingBalance16.apk
           test -s build/RollingBalance16.apk
           ls -lh build/RollingBalance16.apk
 
