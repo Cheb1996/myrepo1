@@ -30,14 +30,18 @@ jobs:
           godot --version
 
       - name: Runtime smoke test
+        shell: bash
         run: |
           set +e
-          godot --headless --path . --quit-after 5 --verbose 2>&1 | tee smoke.log
+          godot --headless --path . --quit-after 12 --verbose 2>&1 | tee smoke.log
           CODE=${PIPESTATUS[0]}
           set -e
-          cat smoke.log
-          if grep -Eiq "SCRIPT ERROR|Parse Error|Invalid call|Invalid set index|Invalid get index|Nonexistent function|Attempt to call function|Cannot assign|Cannot call method" smoke.log; then
+          if grep -Eiq "SCRIPT ERROR|Parse Error|Invalid call|Invalid set index|Invalid get index|Nonexistent function|Attempt to call function|Cannot assign|Cannot call method|Failed to load script" smoke.log; then
             echo "Runtime/script error detected"
+            exit 1
+          fi
+          if ! grep -q "ROLLING_BALANCE_READY" smoke.log; then
+            echo "Game did not reach ready state"
             exit 1
           fi
           if [ "$CODE" -ne 0 ]; then
