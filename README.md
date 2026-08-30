@@ -1,40 +1,84 @@
-# Rolling Balance 16 — Android 16 prototype
+# Rolling Balance 16
 
-Небольшой 3D-прототип в духе игр про балансирование шара на трассе. Все геометрические объекты создаются кодом, поэтому проект не содержит чужих моделей, текстур или музыки.
+Godot 4.7.2 3D rolling-ball game prototype for Android 16. The project is prepared for iterative development with Codex and GitHub Actions.
 
-## Что уже есть
+The game uses original procedural geometry and generated materials; it does not contain copied Ballance assets, levels, textures, or music.
 
-- физический 3D-шар;
-- управление WASD на ПК;
-- сенсорный виртуальный стик на Android;
-- камера, автоматически следующая за шаром;
-- трасса с узкими мостами и подъёмом;
-- движущаяся платформа;
-- вращающийся барьер;
-- 4 чекпоинта;
-- падение и респавн с последнего чекпоинта;
-- финиш и таймер;
-- три режима шара: LIGHT / BALANCED / HEAVY;
-- Android export preset с ARM64 и target SDK 36.
+## Current status
 
-## Рекомендуемая версия
+- Version: 0.2.1.
+- Engine: Godot 4.7.2 stable.
+- Renderer: GL Compatibility.
+- Android: target SDK 36, minimum SDK 29.
+- Architecture: ARM64-v8a.
+- Automatic portrait/landscape sensor rotation.
+- Runtime smoke test before every Android CI build.
 
-Godot 4.7.2 stable.
+## Gameplay
 
-## Как запустить на ПК
+- Physics-driven `RigidBody3D` ball.
+- Camera-relative movement.
+- WASD desktop controls for development.
+- Floating touch joystick on the left side.
+- Right-side swipe camera control.
+- LIGHT / BALANCED / HEAVY ball modes.
+- Procedural stone, wood, moss, metal, and ball textures.
+- Checkpoints and respawn.
+- Moving platforms and rotating obstacles.
+- Collectible energy orbs.
+- Responsive HUD for portrait and landscape.
 
-1. Установите Godot 4.7.2 Standard.
-2. Нажмите Import и выберите `project.godot`.
-3. Нажмите F6/F5 или кнопку Play.
-4. Управление: WASD, R — респавн.
+## Codex
 
-## APK
+Read these files in order:
 
-GitHub Actions автоматически собирает debug APK при push в `main`.
+1. `AGENTS.md` — repository rules, constraints, and mandatory validation.
+2. `ARCHITECTURE.md` — current system design and recommended refactor path.
+3. `CODEX.md` — practical Codex workflow and example tasks.
 
-## Структура
+OpenAI Codex supports repository guidance through `AGENTS.md`, so the project keeps stable development rules there.
 
-- `main.gd` — логика игры и генерация уровня.
-- `main.tscn` — стартовая сцена.
-- `project.godot` — настройки проекта.
-- `export_presets.cfg` — Android 16 export preset.
+## Project structure
+
+```text
+project.godot
+main.tscn          # entry scene
+game.gd            # active gameplay implementation
+export_presets.cfg # Android 16 export preset
+AGENTS.md           # Codex repository instructions
+ARCHITECTURE.md     # design map
+CODEX.md            # Codex workflow notes
+Makefile            # local smoke/build commands
+.github/workflows/build-android-apk.yml
+```
+
+## Run locally
+
+Install Godot 4.7.2 Standard, import `project.godot`, and press Play.
+
+Desktop controls:
+- WASD — move;
+- R — respawn;
+- Q/E — camera helpers.
+
+## Validate
+
+```bash
+make check
+```
+
+The smoke test must load the scene and print `ROLLING_BALANCE_READY` without GDScript/runtime errors.
+
+## Build Android APK
+
+With a configured Android SDK and Godot Android export templates:
+
+```bash
+make build-android
+```
+
+GitHub Actions also builds a debug APK after pushes to `main`. The workflow performs the runtime smoke test before packaging.
+
+## Important
+
+A successful APK export alone does not prove the game starts. The smoke test was added after an earlier build produced a gray screen because a GDScript parse error prevented the gameplay script from loading.

@@ -1,0 +1,20 @@
+# Godot generated data
+.godot/
+
+# Builds
+build/
+*.apk
+*.aab
+
+# Runtime/test output
+smoke.log
+
+# Local Android/Godot export data
+export_credentials.cfg
+android/build/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
