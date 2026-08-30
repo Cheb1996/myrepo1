@@ -29,6 +29,22 @@ jobs:
           fi
           godot --version
 
+      - name: Runtime smoke test
+        run: |
+          set +e
+          godot --headless --path . --quit-after 5 --verbose 2>&1 | tee smoke.log
+          CODE=${PIPESTATUS[0]}
+          set -e
+          cat smoke.log
+          if grep -Eiq "SCRIPT ERROR|Parse Error|Invalid call|Invalid set index|Invalid get index|Nonexistent function|Attempt to call function|Cannot assign|Cannot call method" smoke.log; then
+            echo "Runtime/script error detected"
+            exit 1
+          fi
+          if [ "$CODE" -ne 0 ]; then
+            echo "Godot smoke test exited with $CODE"
+            exit "$CODE"
+          fi
+
       - name: Ensure Android SDK packages
         run: |
           yes | sdkmanager --licenses >/dev/null || true
